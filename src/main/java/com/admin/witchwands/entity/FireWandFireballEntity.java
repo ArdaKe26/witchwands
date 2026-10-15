@@ -1,6 +1,6 @@
 package com.admin.witchwands.entity;
 
-import com.admin.witchwands.ModConstants;
+import static com.admin.witchwands.ModConstants.FireWandConstants.*;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.FireballEntity;
@@ -18,7 +18,7 @@ public class FireWandFireballEntity extends FireballEntity {
     protected void onCollision(HitResult hitResult) {
         if (!getWorld().isClient) {
             getWorld().createExplosion(this, this.getX(), this.getY(), this.getZ(),
-                    ModConstants.FireWandConstants.FIREBALL_POWER, true, ExplosionSourceType.NONE);
+                    FIREBALL_POWER, true, ExplosionSourceType.NONE);
             this.discard();
         }
     }
