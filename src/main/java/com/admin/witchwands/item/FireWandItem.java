@@ -1,9 +1,8 @@
 package com.admin.witchwands.item;
 
-import com.admin.witchwands.ModConstants;
+import com.admin.witchwands.entity.FireWandFireballEntity;
 
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.FireballEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
@@ -22,8 +21,7 @@ public class FireWandItem extends Item {
         if (!world.isClient) {
             Vec3d playerLookDirection = user.getRotationVec(1.0f);
 
-            FireballEntity fireWandFireball = new FireballEntity(world, user, playerLookDirection,
-                    ModConstants.FireWandConstants.FIREBALL_POWER);
+            FireWandFireballEntity fireWandFireball = new FireWandFireballEntity(world, user, playerLookDirection);
             fireWandFireball.setPos(user.getX(), user.getEyeY(), user.getZ());
             world.spawnEntity(fireWandFireball);
         }
