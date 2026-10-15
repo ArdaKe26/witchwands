@@ -4,6 +4,7 @@ import static com.admin.witchwands.ModConstants.FireWandConstants.*;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.FireballEntity;
+import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -17,6 +18,11 @@ public class FireWandFireballEntity extends FireballEntity {
     @Override
     protected void onCollision(HitResult hitResult) {
         if (!getWorld().isClient) {
+            if (hitResult instanceof EntityHitResult entityHit) {
+                onEntityHit(entityHit);
+                entityHit.getEntity().setOnFireFor(FIRE_DURATION_SECONDS);
+            }
+
             getWorld().createExplosion(this, this.getX(), this.getY(), this.getZ(),
                     FIREBALL_POWER, true, ExplosionSourceType.NONE);
             this.discard();
