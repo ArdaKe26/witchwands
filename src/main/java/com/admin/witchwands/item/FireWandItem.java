@@ -36,12 +36,7 @@ public class FireWandItem extends Item {
             UUID userUuid = user.getUuid();
 
             if (user.isSneaking()) {
-                long igniteReadyTime = IGNITE_READY_TIMES.getOrDefault(userUuid, 0L);
-
-                if (time < igniteReadyTime) {
-                    user.sendMessage(Text.literal("Ignite Cooldown: " + (igniteReadyTime - time) / 20 + "s")
-                            .formatted(Formatting.RED), true);
-
+                if (!isAbilityRead(user, time, userUuid, IGNITE_READY_TIMES, "Ignite")) {
                     return TypedActionResult.fail(itemStack);
                 }
 
@@ -56,12 +51,7 @@ public class FireWandItem extends Item {
 
                 IGNITE_READY_TIMES.put(userUuid, time + IGNITE_COOLDOWN_TICKS);
             } else {
-                long fireballReadyTime = FIREBALL_READY_TIMES.getOrDefault(userUuid, 0L);
-
-                if (time < fireballReadyTime) {
-                    user.sendMessage(Text.literal("Fireball Cooldown: " + (fireballReadyTime - time) / 20 + "s")
-                            .formatted(Formatting.RED), true);
-
+                if (!isAbilityRead(user, time, userUuid, FIREBALL_READY_TIMES, "Fireball")) {
                     return TypedActionResult.fail(itemStack);
                 }
 
@@ -75,5 +65,20 @@ public class FireWandItem extends Item {
             }
         }
         return TypedActionResult.success(itemStack);
+    }
+
+    private static boolean isAbilityRead(PlayerEntity user, long time, UUID playerUUID, Map<UUID, Long> READY_TIMES,
+            String abilityName) {
+        long readyTime = READY_TIMES.getOrDefault(playerUUID, 0L);
+
+        if (time < readyTime) {
+            user.sendMessage(
+                    Text.literal(abilityName + " Cooldown: " + (readyTime - time) / 20 + "s").formatted(Formatting.RED),
+                    true);
+
+            return false;
+        } else {
+            return true;
+        }
     }
 }
