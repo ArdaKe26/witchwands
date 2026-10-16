@@ -13,6 +13,8 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
@@ -36,7 +38,7 @@ public class FireWandItem extends Item {
             UUID userUuid = user.getUuid();
 
             if (user.isSneaking()) {
-                if (!isAbilityRead(user, time, userUuid, IGNITE_READY_TIMES, "Ignite")) {
+                if (!isAbilityReady(user, time, userUuid, IGNITE_READY_TIMES, "Ignite")) {
                     return TypedActionResult.fail(itemStack);
                 }
 
@@ -47,11 +49,26 @@ public class FireWandItem extends Item {
 
                 for (LivingEntity entity : mobsNearby) {
                     entity.setOnFireFor(FIRE_DURATION_SECONDS);
+
+                    world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.ENTITY_BLAZE_BURN,
+                            SoundCategory.PLAYERS, 0.4f, 1.0f);
+                }
+
+                if (!mobsNearby.isEmpty()) {
+                    user.sendMessage(
+                            Text.literal(
+                                    mobsNearby.size()
+                                            + (mobsNearby.size() == 1 ? " entity ignited" : " entities ignited"))
+                                    .formatted(Formatting.GOLD),
+                            true);
+                } else {
+                    user.sendMessage(
+                            Text.literal("No entities in range of the Attack").formatted(Formatting.GRAY), true);
                 }
 
                 IGNITE_READY_TIMES.put(userUuid, time + IGNITE_COOLDOWN_TICKS);
             } else {
-                if (!isAbilityRead(user, time, userUuid, FIREBALL_READY_TIMES, "Fireball")) {
+                if (!isAbilityReady(user, time, userUuid, FIREBALL_READY_TIMES, "Fireball")) {
                     return TypedActionResult.fail(itemStack);
                 }
 
@@ -61,24 +78,50 @@ public class FireWandItem extends Item {
                 fireWandFireball.setPos(user.getX(), user.getEyeY(), user.getZ());
                 world.spawnEntity(fireWandFireball);
 
+                world.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.ITEM_FIRECHARGE_USE,
+                        SoundCategory.PLAYERS, 1.0f, 1.0f);
+
                 FIREBALL_READY_TIMES.put(userUuid, time + FIREBALL_COOLDOWN_TICKS);
             }
         }
         return TypedActionResult.success(itemStack);
     }
 
-    private static boolean isAbilityRead(PlayerEntity user, long time, UUID playerUUID, Map<UUID, Long> READY_TIMES,
+    private static boolean isAbilityReady(PlayerEntity user, long time, UUID playerUUID, Map<UUID, Long> readyTimes,
             String abilityName) {
-        long readyTime = READY_TIMES.getOrDefault(playerUUID, 0L);
+        long readyTime = readyTimes.getOrDefault(playerUUID, 0L);
 
         if (time < readyTime) {
             user.sendMessage(
                     Text.literal(abilityName + " Cooldown: " + (readyTime - time) / 20 + "s").formatted(Formatting.RED),
                     true);
-
+            user.playSoundToPlayer(SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.PLAYERS, FIZZLE_SOUND_VOLUME,
+                    FIZZLE_SOUND_PITCH);
             return false;
         } else {
             return true;
+        }
+    }
+
+    @Override
+    public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
+        if (!world.isClient) {
+            long time = world.getTime();
+            if (entity instanceof PlayerEntity player) {
+                notifyIfReady(FIREBALL_READY_TIMES, "Fireball", time, player);
+                notifyIfReady(IGNITE_READY_TIMES, "Ignite", time, player);
+            }
+        }
+    }
+
+    private static void notifyIfReady(Map<UUID, Long> readyTimes, String name, long time,
+            PlayerEntity user) {
+        long cooldownReadyTime = readyTimes.getOrDefault(user.getUuid(), 0L);
+
+        if (time == cooldownReadyTime) {
+            user.sendMessage(Text.literal(name + " is ready to use").formatted(Formatting.GREEN), true);
+            user.playSoundToPlayer(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.PLAYERS, READY_SOUND_VOLUME,
+                    READY_SOUND_PITCH);
         }
     }
 }
