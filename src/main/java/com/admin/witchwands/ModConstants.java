@@ -27,4 +27,6 @@ public class ModConstants {
         public static final double FIREBALL_FLAME_PARTICLE_SPREAD = 0.2f;
         public static final double FIREBALL_SMOKE_PARTICLE_SPREAD = 0.3f;
     }
+
+    public static final String CREATIVE_TAB_ID = "witch_wands";
 }

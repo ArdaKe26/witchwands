@@ -3,10 +3,12 @@ package com.admin.witchwands;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.admin.witchwands.item.ModItemGroups;
 import com.admin.witchwands.item.ModItems;
 
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
@@ -19,6 +21,10 @@ public class WitchWands implements ModInitializer {
 		return Registry.register(Registries.ITEM, id(name), item);
 	}
 
+	public static ItemGroup registerItemGroup(String name, ItemGroup itemGroup) {
+		return Registry.register(Registries.ITEM_GROUP, id(name), itemGroup);
+	}
+
 	@Override
 	public void onInitialize() {
 		// This code runs as soon as Minecraft is in a mod-load-ready state.
@@ -28,6 +34,7 @@ public class WitchWands implements ModInitializer {
 		LOGGER.info("WitchWands mod is Starting!!");
 
 		ModItems.initialize();
+		ModItemGroups.initialize();
 	}
 
 	public static Identifier id(String path) {
