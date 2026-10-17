@@ -13,6 +13,8 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
@@ -33,8 +35,8 @@ public class FireWandItem extends Item {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack itemStack = user.getStackInHand(hand);
-        if (!world.isClient) {
-            long time = world.getTime();
+        if (world instanceof ServerWorld serverWorld) {
+            long time = serverWorld.getTime();
             UUID userUuid = user.getUuid();
 
             if (user.isSneaking()) {
@@ -42,7 +44,7 @@ public class FireWandItem extends Item {
                     return TypedActionResult.fail(itemStack);
                 }
 
-                List<LivingEntity> mobsNearby = world.getEntitiesByClass(LivingEntity.class,
+                List<LivingEntity> mobsNearby = serverWorld.getEntitiesByClass(LivingEntity.class,
                         user.getBoundingBox().expand(IGNITE_RADIUS),
                         entity -> entity != user
                                 && entity.distanceTo(user) <= IGNITE_RADIUS);
@@ -50,8 +52,20 @@ public class FireWandItem extends Item {
                 for (LivingEntity entity : mobsNearby) {
                     entity.setOnFireFor(FIRE_DURATION_SECONDS);
 
-                    world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.ENTITY_BLAZE_BURN,
+                    serverWorld.playSound(null, entity.getX(), entity.getY(), entity.getZ(),
+                            SoundEvents.ENTITY_BLAZE_BURN,
                             SoundCategory.PLAYERS, 0.4f, 1.0f);
+
+                    serverWorld.spawnParticles(
+                            ParticleTypes.FLAME,
+                            entity.getX(),
+                            entity.getBodyY(0.5),
+                            entity.getZ(),
+                            IGNITE_PARTICLE_COUNT,
+                            entity.getWidth() / 2,
+                            entity.getHeight() / 2,
+                            entity.getWidth() / 2,
+                            IGNITE_PARTICLE_SPEED);
                 }
 
                 if (!mobsNearby.isEmpty()) {
@@ -73,12 +87,36 @@ public class FireWandItem extends Item {
                 }
 
                 Vec3d playerLookDirection = user.getRotationVec(1.0f);
+                Vec3d fireballBurstPos = user.getEyePos().add(playerLookDirection);
 
-                FireWandFireballEntity fireWandFireball = new FireWandFireballEntity(world, user, playerLookDirection);
+                FireWandFireballEntity fireWandFireball = new FireWandFireballEntity(serverWorld, user,
+                        playerLookDirection);
                 fireWandFireball.setPos(user.getX(), user.getEyeY(), user.getZ());
-                world.spawnEntity(fireWandFireball);
+                serverWorld.spawnEntity(fireWandFireball);
 
-                world.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.ITEM_FIRECHARGE_USE,
+                serverWorld.spawnParticles(
+                        ParticleTypes.FLAME,
+                        fireballBurstPos.getX(),
+                        fireballBurstPos.getY(),
+                        fireballBurstPos.getZ(),
+                        FIREBALL_FLAME_PARTICLE_COUNT,
+                        FIREBALL_FLAME_PARTICLE_SPREAD,
+                        FIREBALL_FLAME_PARTICLE_SPREAD,
+                        FIREBALL_FLAME_PARTICLE_SPREAD,
+                        FIREBALL_FLAME_PARTICLE_SPEED);
+
+                serverWorld.spawnParticles(
+                        ParticleTypes.SMOKE,
+                        fireballBurstPos.getX(),
+                        fireballBurstPos.getY(),
+                        fireballBurstPos.getZ(),
+                        FIREBALL_SMOKE_PARTICLE_COUNT,
+                        FIREBALL_SMOKE_PARTICLE_SPREAD,
+                        FIREBALL_SMOKE_PARTICLE_SPREAD,
+                        FIREBALL_SMOKE_PARTICLE_SPREAD,
+                        FIREBALL_SMOKE_PARTICLE_SPEED);
+
+                serverWorld.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.ITEM_FIRECHARGE_USE,
                         SoundCategory.PLAYERS, 1.0f, 1.0f);
 
                 FIREBALL_READY_TIMES.put(userUuid, time + FIREBALL_COOLDOWN_TICKS);

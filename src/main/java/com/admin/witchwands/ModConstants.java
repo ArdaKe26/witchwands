@@ -18,5 +18,13 @@ public class ModConstants {
         public static final float READY_SOUND_PITCH = 1.4f;
         public static final float FIZZLE_SOUND_VOLUME = 0.4f;
         public static final float FIZZLE_SOUND_PITCH = 1.8f;
+        public static final int IGNITE_PARTICLE_COUNT = 15;
+        public static final int FIREBALL_FLAME_PARTICLE_COUNT = 10;
+        public static final int FIREBALL_SMOKE_PARTICLE_COUNT = 8;
+        public static final double IGNITE_PARTICLE_SPEED = 0.02f;
+        public static final double FIREBALL_FLAME_PARTICLE_SPEED = 0.05f;
+        public static final double FIREBALL_SMOKE_PARTICLE_SPEED = 0.02f;
+        public static final double FIREBALL_FLAME_PARTICLE_SPREAD = 0.2f;
+        public static final double FIREBALL_SMOKE_PARTICLE_SPREAD = 0.3f;
     }
 }
