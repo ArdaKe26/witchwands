@@ -2,16 +2,16 @@
 	"schemaVersion": 1,
 	"id": "witchwands",
 	"version": "${version}",
-	"name": "WitchWands",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"name": "Witch Wands",
+	"description": "Adds magical witch wands to Minecraft. The Fire Wand launches explosive fireballs that don't break blocks, and Shift + right-click ignites every mob around you. Ice, Teleport and Soil wands are coming soon.",
 	"authors": [
-		"Me!"
+		"arda.kurtulus"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"homepage": "https://modrinth.com/mod/witch-wands",
+		"sources": "https://github.com/ArdaKe26/witchwands"
 	},
-	"license": "CC0-1.0",
+	"license": "MIT",
 	"icon": "assets/witchwands/icon.png",
 	"environment": "*",
 	"entrypoints": {
