@@ -24,6 +24,11 @@ public class ModConstants {
     public static final class IceWandConstants {
         public static final int MAX_STACK_SIZE = 1;
         public static final String NAME = "ice_wand";
+        public static final float SNOWBALL_DAMAGE = 1.0f;
+        public static final int SLOWNESS_DURATION_TICKS = 3 * 20;
+        public static final int SLOWNESS_AMPLIFIER = 0;
+        public static final float SNOWBALL_SPEED = 1.5f;
+        public static final float SNOWBALL_DIVERGENCE = 1.0f;
     }
 
     public static final class WandConstants {
