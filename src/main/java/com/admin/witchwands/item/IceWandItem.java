@@ -15,6 +15,7 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -52,6 +53,11 @@ public class IceWandItem extends WandItem {
                 serverWorld.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.BLOCK_GLASS_BREAK,
                         SoundCategory.PLAYERS, FREEZE_CASTING_VOLUME, FREEZE_CASTING_PITCH);
 
+                serverWorld.spawnParticles(ParticleTypes.SNOWFLAKE, user.getX(), user.getBodyY(0.5),
+                        user.getZ(), FROZEN_CASTING_PARTICLE_COUNT, FROZEN_CASTING_PARTICLE_SPREAD,
+                        FROZEN_CASTING_PARTICLE_SPREAD,
+                        FROZEN_CASTING_PARTICLE_SPREAD, FROZEN_CASTING_PARTICLE_SPEED);
+
                 for (LivingEntity entity : mobsNearby) {
                     entity.addStatusEffect(
                             new StatusEffectInstance(StatusEffects.SLOWNESS, FREEZE_DURATION_TICKS,
@@ -61,6 +67,10 @@ public class IceWandItem extends WandItem {
                     serverWorld.playSound(null, entity.getX(), entity.getY(), entity.getZ(),
                             SoundEvents.BLOCK_POWDER_SNOW_PLACE, SoundCategory.PLAYERS, FROZEN_MOB_VOLUME,
                             FROZEN_MOB_PITCH);
+
+                    serverWorld.spawnParticles(ParticleTypes.SNOWFLAKE, entity.getX(), entity.getBodyY(0.5),
+                            entity.getZ(), FROZEN_MOB_PARTICLE_COUNT, entity.getWidth() / 2, entity.getHeight() / 2,
+                            entity.getWidth() / 2, FROZEN_MOB_PARTICLE_SPEED);
                 }
 
                 if (!mobsNearby.isEmpty()) {
