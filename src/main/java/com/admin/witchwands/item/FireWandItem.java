@@ -43,10 +43,7 @@ public class FireWandItem extends WandItem {
                     return TypedActionResult.fail(itemStack);
                 }
 
-                List<LivingEntity> mobsNearby = serverWorld.getEntitiesByClass(LivingEntity.class,
-                        user.getBoundingBox().expand(IGNITE_RADIUS),
-                        entity -> entity != user
-                                && entity.distanceTo(user) <= IGNITE_RADIUS);
+                List<LivingEntity> mobsNearby = findEntitiesInRadius(serverWorld, user, IGNITE_RADIUS);
 
                 for (LivingEntity entity : mobsNearby) {
                     entity.setOnFireFor(FIRE_DURATION_SECONDS);

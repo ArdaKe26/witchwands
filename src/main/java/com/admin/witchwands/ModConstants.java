@@ -29,6 +29,12 @@ public class ModConstants {
         public static final int SLOWNESS_AMPLIFIER = 0;
         public static final float SNOWBALL_SPEED = 1.5f;
         public static final float SNOWBALL_DIVERGENCE = 1.0f;
+        public static final int SNOWBALL_MAX_AMMO = 30;
+        public static final int SNOWBALL_RELOAD_COOLDOWN_TICKS = 15 * 20;
+        public static final int FREEZE_RADIUS = 25;
+        public static final int FREEZE_DURATION_TICKS = 5 * 20;
+        public static final int FREEZE_SLOWNESS_AMPLIFIER = 10;
+        public static final int FREEZE_COOLDOWN_TICKS = 30 * 20;
     }
 
     public static final class WandConstants {
