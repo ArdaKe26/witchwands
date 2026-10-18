@@ -35,6 +35,16 @@ public class ModConstants {
         public static final int FREEZE_DURATION_TICKS = 5 * 20;
         public static final int FREEZE_SLOWNESS_AMPLIFIER = 10;
         public static final int FREEZE_COOLDOWN_TICKS = 30 * 20;
+        public static final float FREEZE_CASTING_VOLUME = 1.0f;
+        public static final float FREEZE_CASTING_PITCH = 0.6f;
+        public static final float FROZEN_MOB_VOLUME = 0.5f;
+        public static final float FROZEN_MOB_PITCH = 1.0f;
+        public static final float SNOWBALL_THROW_VOLUME = 0.4f;
+        public static final float SNOWBALL_THROW_PITCH_MIN = 0.8f;
+        public static final float SNOWBALL_THROW_PITCH_RANGE = 0.4f;
+        public static final float SNOWBALL_HIT_VOLUME = 0.5f;
+        public static final float SNOWBALL_HIT_PITCH_MIN = 0.9f;
+        public static final float SNOWBALL_HIT_PITCH_RANGE = 0.4f;
     }
 
     public static final class WandConstants {

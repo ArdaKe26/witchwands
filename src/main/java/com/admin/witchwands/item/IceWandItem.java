@@ -16,6 +16,8 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
@@ -47,11 +49,18 @@ public class IceWandItem extends WandItem {
 
                 List<LivingEntity> mobsNearby = findEntitiesInRadius(serverWorld, user, FREEZE_RADIUS);
 
+                serverWorld.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.BLOCK_GLASS_BREAK,
+                        SoundCategory.PLAYERS, FREEZE_CASTING_VOLUME, FREEZE_CASTING_PITCH);
+
                 for (LivingEntity entity : mobsNearby) {
                     entity.addStatusEffect(
                             new StatusEffectInstance(StatusEffects.SLOWNESS, FREEZE_DURATION_TICKS,
                                     FREEZE_SLOWNESS_AMPLIFIER));
                     entity.setFrozenTicks(entity.getMinFreezeDamageTicks() + 2 * FREEZE_DURATION_TICKS);
+
+                    serverWorld.playSound(null, entity.getX(), entity.getY(), entity.getZ(),
+                            SoundEvents.BLOCK_POWDER_SNOW_PLACE, SoundCategory.PLAYERS, FROZEN_MOB_VOLUME,
+                            FROZEN_MOB_PITCH);
                 }
 
                 if (!mobsNearby.isEmpty()) {
@@ -80,6 +89,10 @@ public class IceWandItem extends WandItem {
                 iceWandSnowballEntity.setVelocity(user, user.getPitch(), user.getYaw(), 0.0f, SNOWBALL_SPEED,
                         SNOWBALL_DIVERGENCE);
                 serverWorld.spawnEntity(iceWandSnowballEntity);
+
+                serverWorld.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.ENTITY_SNOWBALL_THROW,
+                        SoundCategory.PLAYERS, SNOWBALL_THROW_VOLUME,
+                        SNOWBALL_THROW_PITCH_MIN + serverWorld.getRandom().nextFloat() * SNOWBALL_THROW_PITCH_RANGE);
 
                 ammoCount -= 1;
 
