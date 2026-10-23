@@ -55,6 +55,13 @@ public class ModConstants {
         public static final double SNOWBALL_HIT_PARTICLE_SPEED = 0.05;
     }
 
+    public static final class TeleportWandConstants {
+        public static final int MAX_STACK_SIZE = 1;
+        public static final String NAME = "teleport_wand";
+        public static final int TELEPORT_RANGE = 30;
+        public static final int TELEPORT_COOLDOWN_TICKS = 7 * 20;
+    }
+
     public static final class WandConstants {
         public static final float READY_SOUND_VOLUME = 0.5f;
         public static final float READY_SOUND_PITCH = 1.4f;

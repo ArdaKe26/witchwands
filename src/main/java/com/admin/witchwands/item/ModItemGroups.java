@@ -15,6 +15,7 @@ public class ModItemGroups {
                     .entries((displayContext, entries) -> {
                         entries.add(ModItems.FIRE_WAND);
                         entries.add(ModItems.ICE_WAND);
+                        entries.add(ModItems.TELEPORT_WAND);
                     }).build());
 
     public static void initialize() {
