@@ -69,6 +69,7 @@ public class ModConstants {
         public static final int PULL_RANGE = 30;
         public static final int PULL_COOLDOWN_TICKS = 35 * 20;
         public static final int PEARL_LOCK_TICKS = 30 * 20;
+        public static final double PULL_LANDING_DISTANCE = 2.0;
     }
 
     public static final class WandConstants {
