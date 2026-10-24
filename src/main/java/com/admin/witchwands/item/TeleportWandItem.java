@@ -182,4 +182,5 @@ public class TeleportWandItem extends WandItem {
     private static boolean isPassable(World world, BlockPos pos) {
         return world.getBlockState(pos).getCollisionShape(world, pos).isEmpty();
     }
+
 }

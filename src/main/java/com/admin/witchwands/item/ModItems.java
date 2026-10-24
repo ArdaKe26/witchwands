@@ -7,9 +7,11 @@ import org.slf4j.Logger;
 import com.admin.witchwands.ModConstants.FireWandConstants;
 import com.admin.witchwands.ModConstants.IceWandConstants;
 import com.admin.witchwands.ModConstants.TeleportWandConstants;
+import com.admin.witchwands.ModConstants.SoilWandConstants;
 import com.admin.witchwands.WitchWands;
 
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
+import net.minecraft.item.HoeItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroups;
 import net.minecraft.item.ShovelItem;
@@ -34,6 +36,13 @@ public class ModItems {
                                         .attributeModifiers(
                                                         ShovelItem.createAttributeModifiers(MELEE_MATERIAL,
                                                                         MELEE_BASE_DAMAGE, ATTACK_SPEED))));
+        public static final Item SOIL_WAND = WitchWands.registerItem(SoilWandConstants.NAME,
+                        new SoilWandItem(new Item.Settings().maxCount(SoilWandConstants.MAX_STACK_SIZE)
+                                        .attributeModifiers(
+                                                        HoeItem.createAttributeModifiers(
+                                                                        SoilWandConstants.MELEE_MATERIAL,
+                                                                        SoilWandConstants.MELEE_BASE_DAMAGE,
+                                                                        SoilWandConstants.ATTACK_SPEED))));
 
         public static void initialize() {
                 LOGGER.info("Registering items!");

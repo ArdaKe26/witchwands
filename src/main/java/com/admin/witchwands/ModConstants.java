@@ -72,6 +72,22 @@ public class ModConstants {
         public static final double PULL_LANDING_DISTANCE = 2.0;
     }
 
+    public static final class SoilWandConstants {
+        public static final int MAX_STACK_SIZE = 1;
+        public static final String NAME = "soil_wand";
+        public static final ToolMaterials MELEE_MATERIAL = ToolMaterials.DIAMOND;
+        public static final float MELEE_BASE_DAMAGE = -3.0f;
+        public static final float ATTACK_SPEED = 0.0f;
+        public static final int FOOD_GIVE_COOLDOWN_TICKS = 10 * 20;
+        public static final int FOOD_GIVE_AMOUNT = 10;
+        public static final int FOOD_GIVE_RANGE = 10;
+        public static final float FOOD_GIVE_SOUND_VOLUME = 1.0f;
+        public static final float FOOD_GIVE_SOUND_PITCH = 1.0f;
+        public static final int FOOD_GIVE_PARTICLE_COUNT = 15;
+        public static final double FOOD_GIVE_PARTICLE_SPREAD = 0.3;
+        public static final double FOOD_GIVE_PARTICLE_SPEED = 0.0;
+    }
+
     public static final class WandConstants {
         public static final float READY_SOUND_VOLUME = 0.5f;
         public static final float READY_SOUND_PITCH = 1.4f;

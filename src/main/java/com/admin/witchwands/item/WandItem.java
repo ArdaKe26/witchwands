@@ -13,6 +13,7 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public abstract class WandItem extends Item {
@@ -53,4 +54,5 @@ public abstract class WandItem extends Item {
                 entity -> entity != user
                         && entity.distanceTo(user) <= radius);
     }
+
 }

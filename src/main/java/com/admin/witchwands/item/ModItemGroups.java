@@ -16,6 +16,7 @@ public class ModItemGroups {
                         entries.add(ModItems.FIRE_WAND);
                         entries.add(ModItems.ICE_WAND);
                         entries.add(ModItems.TELEPORT_WAND);
+                        entries.add(ModItems.SOIL_WAND);
                     }).build());
 
     public static void initialize() {
