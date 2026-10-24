@@ -60,6 +60,15 @@ public class ModConstants {
         public static final String NAME = "teleport_wand";
         public static final int TELEPORT_RANGE = 30;
         public static final int TELEPORT_COOLDOWN_TICKS = 7 * 20;
+        public static final int TELEPORT_PARTICLE_COUNT = 40;
+        public static final double TELEPORT_PARTICLE_SPREAD = 0.5;
+        public static final double TELEPORT_PARTICLE_SPEED = 0.5;
+        public static final float TELEPORT_SOUND_VOLUME = 1.0f;
+        public static final float TELEPORT_DEPART_SOUND_PITCH = 0.8f;
+        public static final float TELEPORT_ARRIVE_SOUND_PITCH = 1.2f;
+        public static final int PULL_RANGE = 30;
+        public static final int PULL_COOLDOWN_TICKS = 35 * 20;
+        public static final int PEARL_LOCK_TICKS = 30 * 20;
     }
 
     public static final class WandConstants {

@@ -6,11 +6,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
@@ -19,10 +22,12 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class TeleportWandItem extends WandItem {
     private static final Map<UUID, Long> TELEPORT_READY_TIMES = new HashMap<>();
+    private static final Map<UUID, Long> PULL_READY_TIMES = new HashMap<>();
 
     public TeleportWandItem(Settings settings) {
         super(settings);
@@ -35,34 +40,53 @@ public class TeleportWandItem extends WandItem {
         if (world instanceof ServerWorld serverWorld) {
             long time = serverWorld.getTime();
             UUID userUuid = user.getUuid();
+            if (user.isSneaking()) {
 
-            if (!isAbilityReady(user, time, userUuid, TELEPORT_READY_TIMES, "Teleport")) {
-                return TypedActionResult.fail(itemStack);
-            }
-
-            HitResult hitResult = user.raycast(TELEPORT_RANGE, 1.0f, false);
-
-            if (hitResult.getType() == HitResult.Type.MISS) {
-                user.sendMessage(Text.literal("No Blocks in Range").formatted(Formatting.GRAY), true);
-                return TypedActionResult.fail(itemStack);
-            } else if (hitResult instanceof BlockHitResult blockHit) {
-                BlockPos targetPos = blockHit.getBlockPos().offset(blockHit.getSide());
-
-                if (blockHit.getSide() == Direction.DOWN) {
-                    targetPos = targetPos.down();
-                }
-                if (!isPassable(serverWorld, targetPos)
-                        || !isPassable(serverWorld, targetPos.up())) {
-
-                    user.sendMessage(Text.literal("Not Enough Space There").formatted(Formatting.GRAY), true);
-
+            } else {
+                if (!isAbilityReady(user, time, userUuid, TELEPORT_READY_TIMES, "Teleport")) {
                     return TypedActionResult.fail(itemStack);
                 }
 
-                user.requestTeleport(targetPos.getX() + 0.5, targetPos.getY(), targetPos.getZ() + 0.5);
-                user.fallDistance = 0;
+                HitResult hitResult = user.raycast(TELEPORT_RANGE, 1.0f, false);
 
-                TELEPORT_READY_TIMES.put(userUuid, time + TELEPORT_COOLDOWN_TICKS);
+                if (hitResult.getType() == HitResult.Type.MISS) {
+                    user.sendMessage(Text.literal("No Blocks in Range").formatted(Formatting.GRAY), true);
+                    return TypedActionResult.fail(itemStack);
+                } else if (hitResult instanceof BlockHitResult blockHit) {
+                    BlockPos targetPos = blockHit.getBlockPos().offset(blockHit.getSide());
+
+                    if (blockHit.getSide() == Direction.DOWN) {
+                        targetPos = targetPos.down();
+                    }
+                    if (!isPassable(serverWorld, targetPos)
+                            || !isPassable(serverWorld, targetPos.up())) {
+
+                        user.sendMessage(Text.literal("Not Enough Space There").formatted(Formatting.GRAY), true);
+
+                        return TypedActionResult.fail(itemStack);
+                    }
+                    Vec3d playerOldPos = user.getPos();
+                    double playerOldBodyY = user.getBodyY(0.5);
+
+                    user.requestTeleport(targetPos.getX() + 0.5, targetPos.getY(), targetPos.getZ() + 0.5);
+                    user.fallDistance = 0;
+
+                    serverWorld.playSound(null, playerOldPos.getX(), playerOldPos.getY(), playerOldPos.getZ(),
+                            SoundEvents.ENTITY_PLAYER_TELEPORT,
+                            SoundCategory.PLAYERS, TELEPORT_SOUND_VOLUME, TELEPORT_DEPART_SOUND_PITCH);
+                    serverWorld.spawnParticles(ParticleTypes.PORTAL, playerOldPos.getX(), playerOldBodyY,
+                            playerOldPos.getZ(), TELEPORT_PARTICLE_COUNT, TELEPORT_PARTICLE_SPREAD,
+                            TELEPORT_PARTICLE_SPREAD, TELEPORT_PARTICLE_SPREAD, TELEPORT_PARTICLE_SPEED);
+
+                    serverWorld.playSound(null, user.getX(), user.getY(), user.getZ(),
+                            SoundEvents.ENTITY_PLAYER_TELEPORT,
+                            SoundCategory.PLAYERS, TELEPORT_SOUND_VOLUME, TELEPORT_ARRIVE_SOUND_PITCH);
+                    serverWorld.spawnParticles(ParticleTypes.PORTAL, user.getX(), user.getBodyY(0.5),
+                            user.getZ(), TELEPORT_PARTICLE_COUNT, TELEPORT_PARTICLE_SPREAD,
+                            TELEPORT_PARTICLE_SPREAD, TELEPORT_PARTICLE_SPREAD, TELEPORT_PARTICLE_SPEED);
+
+                    TELEPORT_READY_TIMES.put(userUuid, time + TELEPORT_COOLDOWN_TICKS);
+                }
 
             }
         }
