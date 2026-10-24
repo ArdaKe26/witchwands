@@ -2,7 +2,7 @@
 
 A Fabric mod for Minecraft 1.21.1 that adds magical witch wands, each with its own abilities.
 
-> 🚧 Early release (v0.2.0): the Fire Wand and Ice Wand are complete, and more wands are on the way!
+> 🚧 Early release (v0.3.0): the Fire, Ice and Teleport Wands are complete, and more wands are on the way!
 
 ## Features
 
@@ -21,6 +21,13 @@ A Fabric mod for Minecraft 1.21.1 that adds magical witch wands, each with its o
 - **Melee**: hits as hard as an iron shovel.
 - Snow and ice sounds, snowflake particles.
 
+### 🌀 Teleport Wand
+
+- **Teleport** (right-click): teleports you to the block you're looking at, up to 30 blocks away. Checks there's room to stand and cancels fall damage. 7 second cooldown.
+- **Pull** (Shift + right-click): pulls the mob or player you're looking at (up to 30 blocks) to right in front of you. Can't pull through walls, but tall grass and flowers don't block it. Pulled players can't use ender pearls for 30 seconds. 35 second cooldown, even if you miss.
+- **Melee**: hits as hard as an iron shovel.
+- Portal sounds and particles where you leave and where you land.
+
 ### ✨ For all wands
 
 - Separate cooldowns for each ability, with messages above the hotbar.
@@ -31,7 +38,7 @@ A Fabric mod for Minecraft 1.21.1 that adds magical witch wands, each with its o
 
 - [x] Fire Wand
 - [x] Ice Wand
-- [ ] Teleport Wand
+- [x] Teleport Wand
 - [ ] Soil Wand
 - [ ] Rare witches that drop the wands
 
