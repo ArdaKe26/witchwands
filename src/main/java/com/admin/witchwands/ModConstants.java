@@ -86,6 +86,13 @@ public class ModConstants {
         public static final int FOOD_GIVE_PARTICLE_COUNT = 15;
         public static final double FOOD_GIVE_PARTICLE_SPREAD = 0.3;
         public static final double FOOD_GIVE_PARTICLE_SPEED = 0.0;
+        public static final int GROW_COOLDOWN_TICKS = 15 * 20;
+        public static final int GROW_RADIUS = 20;
+        public static final int GROW_PARTICLE_COUNT = 5;
+        public static final double GROW_PARTICLE_SPREAD = 0.3;
+        public static final double GROW_PARTICLE_SPEED = 0.0;
+        public static final float GROW_SOUND_VOLUME = 1.0f;
+        public static final float GROW_SOUND_PITCH = 0.8f;
     }
 
     public static final class WandConstants {

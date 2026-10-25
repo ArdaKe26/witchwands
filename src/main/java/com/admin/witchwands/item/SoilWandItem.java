@@ -2,16 +2,24 @@ package com.admin.witchwands.item;
 
 import static com.admin.witchwands.ModConstants.SoilWandConstants.*;
 
+import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Queue;
+import java.util.Set;
 import java.util.UUID;
 
+import net.minecraft.advancement.PlacedAdvancement;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.CropBlock;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -47,7 +55,112 @@ public class SoilWandItem extends WandItem {
             UUID userUuid = user.getUuid();
 
             if (user.isSneaking()) {
+                if (!isAbilityReady(user, time, userUuid, GROW_READY_TIMES, "Grow")) {
+                    return TypedActionResult.fail(itemStack);
+                }
 
+                BlockState standingBlockState = user.getSteppingBlockState();
+                BlockPos standingBlockPos = user.getSteppingPos();
+
+                if (standingBlockState.getBlock() != Blocks.FARMLAND) {
+                    user.sendMessage(Text.literal("Stand on a Farm Block").formatted(Formatting.GRAY), true);
+                    return TypedActionResult.fail(itemStack);
+                } else {
+                    Item offhandItem = user.getOffHandStack().getItem();
+
+                    if (offhandItem instanceof BlockItem blockItem) {
+                        if (blockItem.getBlock() instanceof CropBlock crop) {
+                            Queue<BlockPos> toCheck = new ArrayDeque<>();
+                            Set<BlockPos> checked = new HashSet<>();
+                            List<BlockPos> farmBlocks = new ArrayList<>();
+
+                            toCheck.add(standingBlockPos);
+
+                            while (!toCheck.isEmpty()) {
+                                BlockPos pos = toCheck.poll();
+
+                                if (checked.contains(pos)) {
+                                    continue;
+                                }
+                                checked.add(pos);
+
+                                if (pos.getSquaredDistance(standingBlockPos) > GROW_RADIUS * GROW_RADIUS) {
+                                    continue;
+                                }
+
+                                if (serverWorld.getBlockState(pos).getBlock() != Blocks.FARMLAND) {
+                                    continue;
+                                }
+
+                                farmBlocks.add(pos);
+                                toCheck.add(pos.east());
+                                toCheck.add(pos.west());
+                                toCheck.add(pos.north());
+                                toCheck.add(pos.south());
+                            }
+
+                            int plantedCount = 0;
+                            int grewCount = 0;
+                            int ticketCount = 0;
+
+                            for (BlockPos farmBlock : farmBlocks) {
+                                BlockPos abovePos = farmBlock.up();
+                                BlockState aboveState = serverWorld.getBlockState(abovePos);
+
+                                if (aboveState.getBlock() instanceof CropBlock cropBlock) {
+                                    int cropMaxAge = cropBlock.getMaxAge();
+                                    BlockState fullGrownCropState = cropBlock.withAge(cropMaxAge);
+                                    serverWorld.setBlockState(abovePos, fullGrownCropState);
+
+                                    serverWorld.spawnParticles(ParticleTypes.HAPPY_VILLAGER, abovePos.getX() + 0.5,
+                                            abovePos.getY() + 0.5, abovePos.getZ() + 0.5, GROW_PARTICLE_COUNT,
+                                            GROW_PARTICLE_SPREAD,
+                                            GROW_PARTICLE_SPREAD, GROW_PARTICLE_SPREAD, GROW_PARTICLE_SPEED);
+
+                                    grewCount++;
+                                } else if (aboveState.isAir()) {
+                                    if (ticketCount == 0) {
+                                        if (takeSeed(user, offhandItem)) {
+                                            ticketCount = ticketCount + 2;
+                                        } else {
+                                            continue;
+                                        }
+                                    }
+
+                                    int cropMaxAge = crop.getMaxAge();
+                                    BlockState fullGrownCropState = crop.withAge(cropMaxAge);
+                                    serverWorld.setBlockState(abovePos, fullGrownCropState);
+
+                                    serverWorld.spawnParticles(ParticleTypes.HAPPY_VILLAGER, abovePos.getX() + 0.5,
+                                            abovePos.getY() + 0.5, abovePos.getZ() + 0.5, GROW_PARTICLE_COUNT,
+                                            GROW_PARTICLE_SPREAD,
+                                            GROW_PARTICLE_SPREAD, GROW_PARTICLE_SPREAD, GROW_PARTICLE_SPEED);
+
+                                    grewCount++;
+                                    plantedCount++;
+                                    ticketCount--;
+                                }
+
+                            }
+
+                            serverWorld.playSound(null, user.getX(), user.getY(), user.getZ(),
+                                    SoundEvents.ITEM_BONE_MEAL_USE, SoundCategory.BLOCKS, GROW_SOUND_VOLUME,
+                                    GROW_SOUND_PITCH);
+
+                            user.sendMessage(Text.literal("Planted: " + plantedCount + " / Grew: " + grewCount)
+                                    .formatted(Formatting.GREEN), true);
+
+                        } else {
+                            user.sendMessage(Text.literal("Hold Seeds in Your Offhand").formatted(Formatting.GRAY),
+                                    true);
+                            return TypedActionResult.fail(itemStack);
+                        }
+                    } else {
+                        user.sendMessage(Text.literal("Hold Seeds in Your Offhand").formatted(Formatting.GRAY),
+                                true);
+                        return TypedActionResult.fail(itemStack);
+                    }
+                }
             } else {
                 if (!isAbilityReady(user, time, userUuid, FOOD_GIVE_READY_TIMES, "Food Give")) {
                     return TypedActionResult.fail(itemStack);
@@ -108,7 +221,26 @@ public class SoilWandItem extends WandItem {
             long time = world.getTime();
             if (entity instanceof PlayerEntity playerEntity) {
                 notifyIfReady(FOOD_GIVE_READY_TIMES, "Food Give", time, playerEntity);
+                notifyIfReady(GROW_READY_TIMES, "Grow", time, playerEntity);
             }
         }
+    }
+
+    private static boolean takeSeed(PlayerEntity player, Item seedItem) {
+        ItemStack offhandItemStack = player.getOffHandStack();
+
+        if (offhandItemStack.isOf(seedItem)) {
+            offhandItemStack.decrement(1);
+            return true;
+        } else {
+            for (int i = 0; i < player.getInventory().size(); i++) {
+                if (player.getInventory().getStack(i).isOf(seedItem)) {
+                    player.getInventory().getStack(i).decrement(1);
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }
