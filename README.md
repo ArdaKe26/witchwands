@@ -2,7 +2,7 @@
 
 A Fabric mod for Minecraft 1.21.1 that adds magical witch wands, each with its own abilities.
 
-> 🚧 Early release (v0.3.0): the Fire, Ice and Teleport Wands are complete, and more wands are on the way!
+> 🚧 Early release (v0.4.0): all four wands are complete! Rare witches that drop them are coming next.
 
 ## Features
 
@@ -52,7 +52,7 @@ A peaceful wand for farmers.
 - [x] Fire Wand
 - [x] Ice Wand
 - [x] Teleport Wand
-- [ ] Soil Wand
+- [x] Soil Wand
 - [ ] Rare witches that drop the wands
 
 ## Requirements
