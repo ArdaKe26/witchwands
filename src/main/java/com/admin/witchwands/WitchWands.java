@@ -4,10 +4,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.admin.witchwands.entity.ModEntities;
+import com.admin.witchwands.entity.WitchSpawner;
 import com.admin.witchwands.item.ModItemGroups;
 import com.admin.witchwands.item.ModItems;
 
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.registry.Registries;
@@ -37,6 +39,7 @@ public class WitchWands implements ModInitializer {
 		ModItems.initialize();
 		ModItemGroups.initialize();
 		ModEntities.initialize();
+		ServerTickEvents.END_WORLD_TICK.register(WitchSpawner::tick);
 	}
 
 	public static Identifier id(String path) {

@@ -1,12 +1,16 @@
 package com.admin.witchwands.item;
 
 import static com.admin.witchwands.ModConstants.WandConstants.*;
+import static com.admin.witchwands.ModConstants.WitchConstants.SPAWN_EGG_NAME;
+import static com.admin.witchwands.ModConstants.WitchConstants.SPAWN_EGG_PRIMARY_COLOR;
+import static com.admin.witchwands.ModConstants.WitchConstants.SPAWN_EGG_SECONDARY_COLOR;
 
 import org.slf4j.Logger;
 
 import com.admin.witchwands.ModConstants.FireWandConstants;
 import com.admin.witchwands.ModConstants.IceWandConstants;
 import com.admin.witchwands.ModConstants.TeleportWandConstants;
+import com.admin.witchwands.entity.ModEntities;
 import com.admin.witchwands.ModConstants.SoilWandConstants;
 import com.admin.witchwands.WitchWands;
 
@@ -15,6 +19,7 @@ import net.minecraft.item.HoeItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroups;
 import net.minecraft.item.ShovelItem;
+import net.minecraft.item.SpawnEggItem;
 
 public class ModItems {
         public static final Logger LOGGER = WitchWands.LOGGER;
@@ -43,6 +48,10 @@ public class ModItems {
                                                                         SoilWandConstants.MELEE_MATERIAL,
                                                                         SoilWandConstants.MELEE_BASE_DAMAGE,
                                                                         SoilWandConstants.ATTACK_SPEED))));
+
+        public static final Item WAND_WITCH_SPAWN_EGG = WitchWands.registerItem(SPAWN_EGG_NAME,
+                        new SpawnEggItem(ModEntities.WAND_WITCH, SPAWN_EGG_PRIMARY_COLOR, SPAWN_EGG_SECONDARY_COLOR,
+                                        new Item.Settings()));
 
         public static void initialize() {
                 LOGGER.info("Registering items!");

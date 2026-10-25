@@ -3,7 +3,7 @@
 	"id": "witchwands",
 	"version": "${version}",
 	"name": "Witch Wands",
-	"description": "Adds magical witch wands to Minecraft. The Fire Wand launches explosive fireballs that don't break blocks, and Shift + right-click ignites every mob around you. Ice, Teleport and Soil wands are coming soon.",
+	"description": "Adds four magical wands to Minecraft: Fire, Ice, Teleport and Soil, each with its own right-click and Shift + right-click ability. Find them by defeating rare Wand Witches, who fight with their wand's power and spawn in Nether fortresses, mountain peaks, End cities and abandoned villages.",
 	"authors": [
 		"arda.kurtulus"
 	],

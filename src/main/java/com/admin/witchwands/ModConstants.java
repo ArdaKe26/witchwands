@@ -114,7 +114,7 @@ public class ModConstants {
         public static final String SOIL_WITCH_NAME = "Soil Witch";
         public static final float DIMENSIONS_WIDTH = 0.6f;
         public static final float DIMENSIONS_HEIGHT = 1.95f;
-        public static final float WAND_DROP_CHANCE = 1.0f;
+        public static final float WAND_DROP_CHANCE = 0.10f;
         public static final String WAND_NBT_KEY = "Wand";
         public static final int SNOWBALLS_PER_ATTACK = 10;
         public static final float WITCH_SNOWBALLS_DIVERGENCE = 6.0f;
@@ -154,6 +154,16 @@ public class ModConstants {
         public static final float WITCH_TELEPORT_SOUND_PITCH = 1.2f;
         public static final float WITCH_BLINK_SOUND_VOLUME = 1.0f;
         public static final float WITCH_BLINK_SOUND_PITCH = 1.0f;
+
+        public static final int SPAWN_ATTEMPT_INTERVAL_TICKS = 30 * 20;
+        public static final int SPAWN_MIN_DISTANCE = 24;
+        public static final int SPAWN_MAX_DISTANCE = 48;
+        public static final int SPAWN_VERTICAL_RANGE = 16;
+        public static final int VILLAGER_CHECK_RADIUS = 16;
+        public static final float SPAWN_CHANCE = 0.05f;
+        public static final String SPAWN_EGG_NAME = "wand_witch_spawn_egg";
+        public static final int SPAWN_EGG_PRIMARY_COLOR = 0x2A0F3D;
+        public static final int SPAWN_EGG_SECONDARY_COLOR = 0x51A03E;
     }
 
     public static final String CREATIVE_TAB_ID = "witch_wands";

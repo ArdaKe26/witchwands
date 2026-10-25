@@ -17,6 +17,7 @@ public class ModItemGroups {
                         entries.add(ModItems.ICE_WAND);
                         entries.add(ModItems.TELEPORT_WAND);
                         entries.add(ModItems.SOIL_WAND);
+                        entries.add(ModItems.WAND_WITCH_SPAWN_EGG);
                     }).build());
 
     public static void initialize() {

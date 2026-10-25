@@ -2,6 +2,8 @@ package com.admin.witchwands.entity;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.function.Predicate;
 
 import static com.admin.witchwands.ModConstants.WitchConstants.*;
 
@@ -111,12 +113,13 @@ public class WandWitchEntity extends WitchEntity {
                                         }
 
                                         if (this.getWorld() instanceof ServerWorld serverWorld) {
-                                            serverWorld.spawnParticles(ParticleTypes.PORTAL, this.getX(),
-                                                    this.getY(), this.getZ(),
+                                            serverWorld.spawnParticles(ParticleTypes.PORTAL, this.getTarget().getX(),
+                                                    this.getTarget().getBodyY(0.5), this.getTarget().getZ(),
                                                     WITCH_TELEPORT_PARTICLE_COUNT, WITCH_TELEPORT_PARTICLE_SPREAD,
                                                     WITCH_TELEPORT_PARTICLE_SPREAD, WITCH_TELEPORT_PARTICLE_SPREAD,
                                                     WITCH_TELEPORT_PARTICLE_SPEED);
-                                            serverWorld.playSound(null, this.getX(), this.getY(), this.getZ(),
+                                            serverWorld.playSound(null, this.getTarget().getX(),
+                                                    this.getTarget().getY(), this.getTarget().getZ(),
                                                     SoundEvents.ENTITY_PLAYER_TELEPORT,
                                                     SoundCategory.HOSTILE, WITCH_TELEPORT_SOUND_VOLUME,
                                                     WITCH_TELEPORT_SOUND_PITCH);
@@ -278,5 +281,16 @@ public class WandWitchEntity extends WitchEntity {
         }
 
         return isDamaged;
+    }
+
+    @Override
+    protected void dropEquipment(ServerWorld world, DamageSource source, boolean causedByPlayer) {
+        if (this.isDrinking()) {
+            if (wieldingWand != null) {
+                setWand(wieldingWand);
+            }
+        }
+
+        super.dropEquipment(world, source, causedByPlayer);
     }
 }
