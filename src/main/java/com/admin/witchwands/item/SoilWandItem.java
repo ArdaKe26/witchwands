@@ -12,7 +12,6 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.UUID;
 
-import net.minecraft.advancement.PlacedAdvancement;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
