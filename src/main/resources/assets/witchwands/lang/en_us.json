@@ -3,5 +3,6 @@
     "item.witchwands.ice_wand": "Ice Wand",
     "item.witchwands.teleport_wand": "Teleport Wand",
     "item.witchwands.soil_wand": "Soil Wand",
+    "entity.witchwands.wand_witch": "Wand Witch",
     "itemGroup.witchwands.witch_wands": "Witch Wands"
 }

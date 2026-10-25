@@ -3,6 +3,7 @@ package com.admin.witchwands;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.admin.witchwands.entity.ModEntities;
 import com.admin.witchwands.item.ModItemGroups;
 import com.admin.witchwands.item.ModItems;
 
@@ -35,6 +36,7 @@ public class WitchWands implements ModInitializer {
 
 		ModItems.initialize();
 		ModItemGroups.initialize();
+		ModEntities.initialize();
 	}
 
 	public static Identifier id(String path) {

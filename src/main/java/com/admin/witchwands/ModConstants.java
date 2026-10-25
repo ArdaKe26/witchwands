@@ -106,5 +106,55 @@ public class ModConstants {
         public static final float ATTACK_SPEED = -3.0f;
     }
 
+    public static final class WitchConstants {
+        public static final String NAME = "wand_witch";
+        public static final String FIRE_WITCH_NAME = "Fire Witch";
+        public static final String ICE_WITCH_NAME = "Ice Witch";
+        public static final String TELEPORT_WITCH_NAME = "Teleport Witch";
+        public static final String SOIL_WITCH_NAME = "Soil Witch";
+        public static final float DIMENSIONS_WIDTH = 0.6f;
+        public static final float DIMENSIONS_HEIGHT = 1.95f;
+        public static final float WAND_DROP_CHANCE = 1.0f;
+        public static final String WAND_NBT_KEY = "Wand";
+        public static final int SNOWBALLS_PER_ATTACK = 10;
+        public static final float WITCH_SNOWBALLS_DIVERGENCE = 6.0f;
+        public static final double SNOWBALLS_ARC = 0.2;
+        public static final double FOLLOW_RANGE = 32.0;
+        public static final int WITCH_PULL_COOLDOWN_TICKS = 10 * 20;
+        public static final int WITCH_PULL_MIN_DISTANCE = 5;
+        public static final int WITCH_PULL_MAX_DISTANCE = 30;
+        public static final double WITCH_PULL_LANDING_DISTANCE = 2.0;
+        public static final int WITCH_BLINK_COOLDOWN_TICKS = 5 * 20;
+        public static final int WITCH_BLINK_TRIGGER_DISTANCE = 4;
+        public static final int WITCH_BLINK_RANGE = 32;
+        public static final int WITCH_BLINK_TRIES = 16;
+        public static final int WITCH_BLINK_EXTRA_HEIGHT = 8;
+        public static final int WITCH_HEAL_COOLDOWN_TICKS = 5 * 20;
+        public static final int WITCH_HEAL_RADIUS = 10;
+        public static final float WITCH_HEAL_AMOUNT = 4.0f;
+        public static final int WITCH_HEAL_PARTICLE_COUNT = 8;
+        public static final double WITCH_HEAL_PARTICLE_SPREAD = 0.4;
+        public static final double WITCH_HEAL_PARTICLE_SPEED = 0.0;
+        public static final float WITCH_HEAL_SOUND_VOLUME = 1.0f;
+        public static final float WITCH_HEAL_SOUND_PITCH = 1.3f;
+        public static final int WITCH_FIREBALL_PARTICLE_COUNT = 10;
+        public static final double WITCH_FIREBALL_PARTICLE_SPREAD = 0.2;
+        public static final double WITCH_FIREBALL_PARTICLE_SPEED = 0.02;
+        public static final float WITCH_FIREBALL_SOUND_VOLUME = 1.0f;
+        public static final float WITCH_FIREBALL_SOUND_PITCH = 0.8f;
+        public static final int WITCH_SNOWBALL_PARTICLE_COUNT = 15;
+        public static final double WITCH_SNOWBALL_PARTICLE_SPREAD = 0.3;
+        public static final double WITCH_SNOWBALL_PARTICLE_SPEED = 0.02;
+        public static final float WITCH_SNOWBALL_SOUND_VOLUME = 1.0f;
+        public static final float WITCH_SNOWBALL_SOUND_PITCH = 0.6f;
+        public static final int WITCH_TELEPORT_PARTICLE_COUNT = 40;
+        public static final double WITCH_TELEPORT_PARTICLE_SPREAD = 0.5;
+        public static final double WITCH_TELEPORT_PARTICLE_SPEED = 0.5;
+        public static final float WITCH_TELEPORT_SOUND_VOLUME = 1.0f;
+        public static final float WITCH_TELEPORT_SOUND_PITCH = 1.2f;
+        public static final float WITCH_BLINK_SOUND_VOLUME = 1.0f;
+        public static final float WITCH_BLINK_SOUND_PITCH = 1.0f;
+    }
+
     public static final String CREATIVE_TAB_ID = "witch_wands";
 }
