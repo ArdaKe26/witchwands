@@ -28,6 +28,19 @@ A Fabric mod for Minecraft 1.21.1 that adds magical witch wands, each with its o
 - **Melee**: hits as hard as an iron shovel.
 - Portal sounds and particles where you leave and where you land.
 
+### 🌱 Soil Wand
+
+A peaceful wand for farmers.
+
+- **Food Give** (right-click): look at a wheat, carrot, potato or beetroot crop (up to 10 blocks away) to get 10 of that food. If your inventory is full, it drops at your feet. 10 second cooldown.
+- **Grow** (Shift + right-click while standing on farmland): spreads through your whole connected farm, up to 20 blocks away.
+  - Every crop grows to full instantly.
+  - Empty farmland gets planted with the seeds in your **offhand**, fully grown.
+  - **1 seed plants 2 blocks.** When your offhand runs out, it uses the same seeds from your inventory.
+  - 15 second cooldown.
+- **Melee**: hits like a diamond hoe.
+- Bonemeal sounds and green sparkles on every crop.
+
 ### ✨ For all wands
 
 - Separate cooldowns for each ability, with messages above the hotbar.
